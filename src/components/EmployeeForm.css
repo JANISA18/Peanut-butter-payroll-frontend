@@ -1,0 +1,190 @@
+.Parent-Container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding: 20px;
+}
+
+
+/* Container for Employee Information */
+.employee-form {
+  padding: 20px;
+  margin-top: 20px;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Add shadow for container */
+  margin-left: 20px;  /* Add left padding */
+  margin-right: 20px; /* Add right padding */
+}
+.add-employees-btn{
+  float: right;
+  border: 2px solid black;
+  margin: 8px;
+  border-radius: 5px;
+  padding: 5px;
+}
+.clearfix::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+/* Table Styling for Employee Data */
+.employee-table {
+  
+  padding: 20px;
+  margin-top: 20px;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Add shadow for container */
+  margin-left: 20px;  /* Add left padding */
+  margin-right: 20px; /* Add right padding */
+
+}
+
+.Current-Employees-table {
+  width: 100%;
+  border-collapse: collapse;
+  border-bottom: 1px solid #070707;
+}
+
+.employee-table th,
+.employee-table td {
+  padding: 12px;
+  text-align: left;
+  border-right: 1px solid #0a0a0a; /*  column lines */
+
+}
+
+.employee-table th {
+  border-bottom: 2px solid #333; /*  bottom border to table headings */
+  border-top: 2px solid #333; /*  top border to table headings */
+}
+
+
+
+.employee-table th:first-child,
+.employee-table td:first-child {
+  border-left: 1px solid #080808; /* Add left border for the first column */
+}
+
+/* Shadow Box for Form Container */
+.shadow-box {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Styling for Required Fields Indicator */
+.required {
+  color: red;
+  margin-left: 4px;
+}
+
+/* Flex Grid for Form Sections */
+.form-grid {
+  align-items: center;
+  display: flex;
+  flex-direction: row; 
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.left-section,
+.right-section {
+  display: flex;
+  flex-direction: column; /* Stacking label/input vertically */
+  align-items: flex-start; /* Left align everything */
+  gap: 10px;
+  flex: 1;
+  min-width: 30px;
+}
+
+.radio-group,
+.checkbox-group {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Actions Section Styling */
+.actions {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+  display: flex;
+  justify-content: center;
+  gap: 10px; /* optional: space between buttons */
+  
+}
+
+
+.error {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+/* Input Validation Styling */
+input:invalid,
+select:invalid,
+.radio-group input:invalid {
+  border-color: red;
+}
+
+input:required:invalid,
+select:required:invalid {
+  border-color: red;
+}
+
+/* Save Button Styling */
+.save-btn {
+  border: none;
+  color: aliceblue;
+  border-radius: 0.2rem;
+  padding: 6px;
+}
+.selected-row {
+  background-color: #d6f0ff; /* light blue or any highlight color */
+}
+/* Responsive adjustments for small screens */
+@media (max-width: 100px) {
+  .Current-Employees-table,
+  .employee-table {
+    overflow-x: auto;
+    display: block;
+  }
+
+  .Current-Employees-table thead {
+    display: none; /* Hide table header for mobile */
+  }
+
+  .Current-Employees-table tr {
+    display: block;
+    margin-bottom: 15px;
+    /* border: 1px solid #ccc; */
+    padding: 10px;
+  }
+
+  .Current-Employees-table td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: none;
+    padding: 8px 0;
+    /* border-bottom: 1px solid #eee; */
+  }
+
+  .Current-Employees-table td::before {
+    content: attr(data-label);
+    font-weight: bold;
+    flex: 1;
+    text-align: left;
+  }
+
+  .employee-table th,
+  .employee-table td {
+    border: none;
+  }
+}
