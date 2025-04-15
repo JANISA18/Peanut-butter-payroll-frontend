@@ -14,7 +14,7 @@ interface Employee {
   gender: string;
   fullName: string;
   grossSalary: string;
-  profileColors: string[];
+  profileColor: string;
 }
 
 const initialState: Employee = {
@@ -26,7 +26,7 @@ const initialState: Employee = {
   gender: '',
   fullName: '',
   grossSalary: '',
-  profileColors: [],
+  profileColor:'',
 };
 
 const EmployeeForm: React.FC = () => {
@@ -66,13 +66,14 @@ const EmployeeForm: React.FC = () => {
   };
 
 
-  const handleColorToggle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value, checked } = e.target;
-    setForm((prevForm) => ({
-      ...prevForm,
-      profileColors: checked ? [value] : []
-    }));
-  };
+      const handleColorToggle = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const { value, checked } = e.target;
+      setForm((prevForm) => ({
+        ...prevForm,
+        profileColor: checked ? value : '', // ✅ since only one color is allowed
+      }));
+    };
+    
   
   const handleSalaryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let input = e.target.value.replace(/\D/g, ''); // remove all non-digits
@@ -110,17 +111,30 @@ const EmployeeForm: React.FC = () => {
 
 
 
-const fetchEmployees = async () => {
-  try {
-    const response = await fetch(`${API_BASE_URL}/employees`);
-    const data = await response.json();
-    setEmployeeList(data);
-  } catch (error) {
-    console.error('Error fetching employees:', error);
-    alert('An unexpected error occurred while fetching employees.');
-  }
-};
-
+  const fetchEmployees = async () => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/employees`);
+      console.log('Fetch response:', response);
+  
+      const data = await response.json(); // ✅ Parse JSON once
+  
+      if (response.ok) {
+        if (Array.isArray(data) && data.length > 0) {
+          setEmployeeList(data);
+        } else {
+          console.warn("No employee data found.");
+          setEmployeeList([]); // or you can skip this line
+        }
+      } else {
+        console.error('Server error response:', data);
+        alert(`Failed to fetch employees: ${response.status}`);
+      }
+    } catch (error) {
+      console.error('Error fetching employees:', error);
+      alert(`Failed to fetch employees: ${error}`);
+    }
+  };
+  
 
   
   const handleSave = async (e: React.FormEvent) => {
@@ -197,7 +211,7 @@ const fetchEmployees = async () => {
       gender: emp.gender,
       fullName: `${emp.firstName} ${emp.lastName}`.trim(),
       grossSalary: emp.grossSalary,
-      profileColors: emp.profileColors || [],
+      profileColor: emp.profileColor,
     });
   };
 
@@ -238,7 +252,7 @@ const fetchEmployees = async () => {
               <th>Last Name</th>
               <th>Salutation</th>
               <th>Profile Colour</th>
-              <th>Pay</th>
+              {/* <th>Pay</th> */}
               <th>Action</th>
             </tr>
           </thead>
@@ -248,7 +262,7 @@ const fetchEmployees = async () => {
          
         <tr key={emp.id}
           
-        style={{ cursor:"pointer", backgroundColor: emp.profileColors[0] || "white" }}
+        style={{ cursor:"pointer", backgroundColor: emp.profileColor || "white" }}
           onClick={() => {
             setSelectedRowId(prev => (prev === emp.id ? null : emp.id));
             if (selectedRowId !== emp.id) {
@@ -264,9 +278,9 @@ const fetchEmployees = async () => {
           <td data-label="First Name">{emp.firstName}</td>
           <td data-label="Last Name">{emp.lastName}</td>
           <td data-label="Salutation">{emp.salutation}</td>
-          <td data-label="Pay">{emp.grossSalary}</td>
+          {/* <td data-label="Pay">{emp.grossSalary}</td> */}
 
-          <td data-label="Profile Colours">{Array.isArray(emp.profileColors) ? emp.profileColors.join(', ') : emp.profileColors}</td>
+          <td data-label="Profile Colours">{Array.isArray(emp.profileColor) ? emp.profileColor.join(', ') : emp.profileColor}</td>
           <td data-label="Actions">
                 {/* <button
                     style={{ color: 'lightblue',  border: 'none', padding:0, margin:10, cursor:'pointer'}}
@@ -370,7 +384,7 @@ const fetchEmployees = async () => {
               <input
                 type="checkbox"
                 value={color}
-                checked={form.profileColors.includes(color)}
+                checked={form.profileColor===color}
                 onChange={handleColorToggle}
               />
               {color}
@@ -381,7 +395,7 @@ const fetchEmployees = async () => {
         </div>
 
         <div className="actions">
-          <button className='save-btn' type="submit" style={{ backgroundColor: form.profileColors[0]?.toLowerCase() || 'green' }}>
+          <button className='save-btn' type="submit" style={{ backgroundColor: form.profileColor?.toLowerCase() || 'green' }}>
             Save
           </button>
           <button className='cancel-btn' type="button" onClick={handleCancel}>Cancel</button>
